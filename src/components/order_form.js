@@ -8,15 +8,12 @@ export default class OrderForm extends React.Component {
   }
 
   handleEvent = (e) => {
-    console.log(this)
     this.setState({ [e.target.name]: e.target.value })
   }
 
   render() {
     return(
       <div>
-        <pre>{ JSON.stringify(this.props.products) }</pre>
-        <pre>{ JSON.stringify(this.state) }</pre>
         <h2>Для совершения заказа введите данные:</h2>
         <hr />
         <div>
@@ -31,6 +28,7 @@ export default class OrderForm extends React.Component {
           <label>Отчество:</label>
           <input onChange={this.handleEvent} name="patronymic" type="text" />
         </div>
+        <button onClick={(e) => this.props.orderFormCallback(e, this.state)}>Отправить данные</button>
       </div>
     )
   }

@@ -16,6 +16,12 @@ export default [
     price: 450,
     rest: 8,
     count: 1
+  },
+  {
+    title: 'Книга по Java',
+    price: 450,
+    rest: 8,
+    count: 1
   }
 ]
 

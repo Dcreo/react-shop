@@ -1,10 +1,13 @@
 export default class SnapshotMaker {
   make(type, content) {
+    let snapshot;
     switch (type) {
     case 'products':
-      this.productsSnapshot(content)
+      snapshot = this.productsSnapshot(content)
       break;
     }
+
+    return snapshot;
   }
 
   productsSnapshot(content) {
