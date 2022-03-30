@@ -1,25 +1,19 @@
 import React from 'react';
+import Cart from '@models/cart';
+import OrderFormModel from '@models/order_form';
+import Router from '@routings/router';
 
 export default class OrderFinish extends React.Component {
-  fullname() {
-    let { name, surname, patronymic } = this.props.orderData;
-    return [surname, name, patronymic].join(' ');
-  }
-
-  total() {
-    return this.props.productsSnapshot.totalSum
-  }
-
   render() {
-    let products = this.props.productsSnapshot.productsWithTotalPrice.map((p, i) => {
+    let products = Cart.products.map((p, i) => {
       return(<div key={i}>{ p.title } - { p.totalPrice } ({p.count} шт.)</div>)
     })
 
     return(
       <div>
-        <a onClick={() => this.props.goBackCallback('orderForm')}>Назад</a>
+        <a onClick={() => Router.moveTo('orderForm')}>Назад</a>
         <h2>Ваш заказ успешно оформлен</h2>
-        <p>Уважаемый {this.fullname()} ваш заказ на {this.total()} рублей успешно создан.</p>
+        <p>Уважаемый {OrderFormModel.fullname} ваш заказ на {Cart.total} рублей успешно создан.</p>
 
         { products }
         <hr />

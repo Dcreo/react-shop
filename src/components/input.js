@@ -1,30 +1,17 @@
 import React from 'react';
+import { observer } from "mobx-react";
 
-export default class Input extends React.Component {
-  state = {
-    min: this.props.min,
-    max: this.props.max
-  }
-
+export default @observer class Input extends React.Component {
   inputRef = React.createRef();
 
-  handleBlur = (e) => {
-    this.inputRef.current.value = this.checkMinMax(e.target.value)
-    this.props.onChange(e)
-  }
-
   componentWillReceiveProps(nextProps) {
-    this.inputRef.current.value = this.checkMinMax(nextProps.value)
-  }
-
-  checkMinMax(currentValue) {
-    return Math.max(this.state.min, Math.min(currentValue, this.state.max))
+    this.inputRef.current.value = nextProps.value
   }
 
   render() {
     return(
       <span>
-        <input defaultValue={this.props.value} onBlur={this.handleBlur} ref={this.inputRef} />
+        <input defaultValue={this.props.value} onBlur={this.props.onChange} ref={this.inputRef} className="form-control" />
       </span>
     )
   }

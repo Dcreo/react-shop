@@ -1,43 +1,68 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Input from './input'
+import Cart from '@models/cart';
+import { Table, InputGroup, Form, Container } from 'react-bootstrap';
+import { observer } from "mobx-react";
 
-export default class Changer extends React.Component {
+export default @observer class Changer extends React.Component {
   state = {
+    min: this.props.min,
+    max: this.props.max,
+    inputValue: this.props.min,
+    count: this.props.min,
   }
 
-  inputOnChange(e) {
+  inputOnChange = (e) => {
+    let newState = { ...this.state, count: e.target.value }
+    let { count } = newState
+    this.setCount(count)
   }
 
-  productSumPrice(product) {
-    return product.count * product.price
+  plus = () => {
+    let newState = { ...this.state }
+    let { count } = newState
+
+    this.setCount(count + 1)
   }
 
-  totalPrice() {
-    return this.props.products.reduce((value, p) => value + this.productSumPrice(p), 0)
+  minus = () => {
+    let newState = { ...this.state }
+    let { count } = newState
+
+    this.setCount(count - 1)
+  }
+
+  setCount = (count) => {
+    count = this.checkMinMax(count)
+    let newState = { ...this.state, inputValue: count }
+    let { inputValue } = newState
+    this.setState({ count })
+    this.setState({ inputValue })
+    this.props.changeCountCallback(count)
+  }
+
+  checkMinMax(currentValue) {
+    return Math.max(this.state.min, Math.min(currentValue, this.state.max))
   }
 
   render() {
-    let items = []
-    items = this.props.products.map((p, i) => {
-      return(
-        <div key={i}>
-          { p.title }
-          <button onClick={() => this.props.changeCountCallback(i, '-')}>-</button>
-          <Input value={p.count} onChange={this.inputOnChange} min={1} max={p.rest} />
-          <button onClick={() => this.props.changeCountCallback(i, '+')}>+</button>
-          { this.productSumPrice(p) } руб.
-        </div>
-      )
-    })
-
-    let total = <div>{ this.totalPrice() } руб.</div>
-
     return(
-      <div>
-        { items }
-        <hr />
-        { total }
-      </div>
+      <span>
+        <InputGroup>
+          <InputGroup.Text id="btnGroupAddon" onClick={this.minus}>-</InputGroup.Text>
+            <Input
+              value={this.state.inputValue}
+              onChange={this.inputOnChange} />
+          <InputGroup.Text id="btnGroupAddon" onClick={this.plus}>+</InputGroup.Text>
+        </InputGroup>
+      </span>
     )
   }
 }
+
+Changer.defaultProps = {
+  min: 1,
+  max: 10
+}
+

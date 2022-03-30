@@ -12,6 +12,10 @@ let conf = {
   module: {
     rules: [
       {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
@@ -20,7 +24,8 @@ let conf = {
             presets: ['@babel/preset-env'],
             plugins: [
               '@babel/plugin-transform-react-jsx',
-              '@babel/plugin-proposal-class-properties'
+              ['@babel/plugin-proposal-decorators', { "legacy": true }],
+              ['@babel/plugin-proposal-class-properties', { "loose": true }],
             ]
           }
         }
@@ -41,6 +46,15 @@ let conf = {
     hot: true,
     port: 9000,
   },
+  resolve: {
+    alias: {
+      "@components": path.resolve(__dirname, 'src/components/'),
+      "@commons": path.resolve(__dirname, 'src/commons/'),
+      "@data": path.resolve(__dirname, 'src/data/'),
+      "@routings": path.resolve(__dirname, 'src/routings/'),
+      "@models": path.resolve(__dirname, 'src/models/')
+    }
+  }
 };
 
 module.exports = conf;
